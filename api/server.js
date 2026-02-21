@@ -74,10 +74,10 @@ const upload = multer({
 
 // Database connection pool
 const pool = mysql.createPool({
-    host: '127.0.0.1', // Changed from 'localhost' - forces IPv4
-    user: 'u760255612_musicians',
-    password: 'ngna&wXrb%AuNKI7',
-    database: 'u760255612_musicians',
+    host: process.env.DB_HOST || 'localhost',  // ✅ Now reads environment variable!
+    user: process.env.DB_USER || 'u760255612_musicians',
+    password: process.env.DB_PASSWORD || 'ngna&wXrb%AuNKI7',
+    database: process.env.DB_NAME || 'u760255612_musicians',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
