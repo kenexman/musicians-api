@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmers Market Musicians Signup</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Epilogue:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --acoustic-orange: #FF6B35;
+      --vinyl-black: #1A1A1D;
+      --amp-silver: #C5C6C7;
+      --stage-purple: #7B2CBF;
+      --melody-yellow: #FFD23F;
+      --quiet-cream: #F8F9FA;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Epilogue', sans-serif;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      color: var(--quiet-cream);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 50px 20px 30px;
+      position: relative;
+    }
+
+    h1 {
+      font-family: 'Space Mono', monospace;
+      font-size: 3.8rem;
+      font-weight: 700;
+      color: var(--melody-yellow);
+      margin-bottom: 10px;
+      letter-spacing: -2px;
+      text-shadow: 0 0 30px rgba(255, 210, 63, 0.5);
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 20px rgba(255, 210, 63, 0.3); }
+      to { text-shadow: 0 0 40px rgba(255, 210, 63, 0.6); }
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      color: var(--amp-silver);
+      font-weight: 300;
+      margin-bottom: 10px;
+    }
+
+    .info-banner {
+      background: rgba(255, 107, 53, 0.15);
+      border-left: 4px solid var(--acoustic-orange);
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin: 20px auto;
+      max-width: 800px;
+      font-size: 0.95rem;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      padding: 14px 32px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid var(--acoustic-orange);
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--acoustic-orange);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .tab-button:hover {
+      background: var(--acoustic-orange);
+      color: var(--vinyl-black);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+    }
+
+    .tab-button.active {
+      background: var(--melody-yellow);
+      color: var(--vinyl-black);
+      border-color: var(--melody-yellow);
+      box-shadow: 0 4px 15px rgba(255, 210, 63, 0.3);
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      margin-bottom: 30px;
+    }
+
+    .card-header {
+      font-family: 'Space Mono', monospace;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--melody-yellow);
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--acoustic-orange);
+      text-transform: uppercase;
+      letter-spacing: -1px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: var(--amp-silver);
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      font-family: 'Epilogue', sans-serif;
+      font-size: 1rem;
+      color: var(--quiet-cream);
+      transition: all 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--acoustic-orange);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .date-card {
+      background: linear-gradient(135deg, rgba(123, 44, 191, 0.2) 0%, rgba(26, 26, 29, 0.6) 100%);
+      border: 2px solid rgba(123, 44, 191, 0.4);
+      border-radius: 15px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .date-card::before {
+      content: '♪';
+      position: absolute;
+      top: -20px;
+      right: -10px;
+      font-size: 6rem;
+      opacity: 0.05;
+      color: var(--melody-yellow);
+    }
+
+    .date-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(123, 44, 191, 0.4);
+      border-color: var(--acoustic-orange);
+    }
+
+    .date-header {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--melody-yellow);
+      margin-bottom: 5px;
+    }
+
+    .date-subheader {
+      font-size: 0.85rem;
+      color: var(--amp-silver);
+      margin-bottom: 15px;
+    }
+
+    .time-slot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .time-slot.available {
+      border-color: rgba(255, 210, 63, 0.5);
+      background: rgba(255, 210, 63, 0.08);
+    }
+
+    .time-slot.booked {
+      background: rgba(255, 107, 53, 0.08);
+      border-color: rgba(255, 107, 53, 0.5);
+    }
+
+    .time-info {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .performer-name {
+      font-size: 0.85rem;
+      color: var(--amp-silver);
+      margin-top: 3px;
+    }
+
+    .status-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-available {
+      background: var(--melody-yellow);
+      color: var(--vinyl-black);
+    }
+
+    .status-booked {
+      background: var(--acoustic-orange);
+      color: white;
+    }
+
+    .status-waitlist {
+      background: var(--stage-purple);
+      color: white;
+    }
+
+    .btn {
+      padding: 14px 32px;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--acoustic-orange) 0%, #d65429 100%);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 107, 53, 0.5);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, var(--stage-purple) 0%, #5a1f94 100%);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(123, 44, 191, 0.5);
+    }
+
+    .btn-small {
+      padding: 8px 16px;
+      font-size: 0.8rem;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .admin-table th {
+      background: linear-gradient(135deg, var(--stage-purple) 0%, var(--acoustic-orange) 100%);
+      color: white;
+      padding: 16px;
+      text-align: left;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.85rem;
+    }
+
+    .admin-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--quiet-cream);
+    }
+
+    .admin-table tr:hover {
+      background: rgba(255, 107, 53, 0.1);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      animation: fadeIn 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, rgba(48, 43, 99, 0.98) 0%, rgba(26, 26, 29, 0.98) 100%);
+      border: 2px solid var(--acoustic-orange);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .success-message {
+      background: linear-gradient(135deg, var(--acoustic-orange) 0%, var(--stage-purple) 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+      cursor: pointer;
+      accent-color: var(--acoustic-orange);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.2) 0%, rgba(123, 44, 191, 0.2) 100%);
+      border: 2px solid rgba(255, 107, 53, 0.4);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--melody-yellow);
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--amp-silver);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .admin-login {
+      max-width: 450px;
+      margin: 100px auto;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .filter-bar select {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .stipend-info {
+      background: rgba(255, 210, 63, 0.15);
+      border: 2px solid var(--melody-yellow);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .stipend-amount {
+      font-family: 'Space Mono', monospace;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--melody-yellow);
+    }
+
+    .genre-tag {
+      display: inline-block;
+      background: rgba(197, 198, 199, 0.2);
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 0.75rem;
+      margin-right: 5px;
+      margin-top: 5px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      font-size: 1.2rem;
+      color: var(--melody-yellow);
+    }
+
+    .error-message {
+      background: rgba(255, 107, 53, 0.2);
+      border: 2px solid var(--acoustic-orange);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      color: var(--acoustic-orange);
+    }
+
+    .market-selector {
+      margin-bottom: 30px;
+    }
+
+    /* File Upload Styles */
+    .file-upload-section {
+      margin-top: 40px;
+      padding: 30px;
+      background: rgba(123, 44, 191, 0.1);
+      border: 2px solid var(--stage-purple);
+      border-radius: 15px;
+    }
+
+    .file-upload-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .file-upload-box {
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .file-upload-box:hover {
+      border-color: var(--acoustic-orange);
+      background: rgba(255, 107, 53, 0.1);
+    }
+
+    .file-upload-box.has-file {
+      border-color: var(--melody-yellow);
+      border-style: solid;
+    }
+
+    .file-upload-icon {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .file-upload-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--melody-yellow);
+      margin-bottom: 5px;
+    }
+
+    .file-upload-hint {
+      font-size: 0.85rem;
+      color: var(--amp-silver);
+      margin-top: 5px;
+    }
+
+    .file-preview {
+      margin-top: 15px;
+    }
+
+    .file-preview img {
+      max-width: 100%;
+      max-height: 150px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .audio-preview audio {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .file-info {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: var(--amp-silver);
+    }
+
+    .remove-file-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .remove-file-btn:hover {
+      background: #c82333;
+      transform: scale(1.1);
+    }
+
+    .upload-progress {
+      margin-top: 15px;
+      padding: 15px;
+      background: rgba(255, 210, 63, 0.1);
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    /* Schedule Manager Styles */
+    .schedule-manager {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .schedule-section {
+      margin-bottom: 30px;
+    }
+
+    .schedule-section h3 {
+      color: var(--melody-yellow);
+      margin-bottom: 15px;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .day-selector {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .day-checkbox {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .day-checkbox:hover {
+      background: rgba(255, 107, 53, 0.2);
+    }
+
+    .day-checkbox.selected {
+      background: var(--acoustic-orange);
+      color: white;
+    }
+
+    .time-slot-list {
+      display: grid;
+      gap: 15px;
+    }
+
+    .time-slot-item {
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 2fr auto;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .time-slot-item input {
+      margin-bottom: 0;
+    }
+
+    .month-selector {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .month-checkbox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .month-checkbox:hover {
+      background: rgba(123, 44, 191, 0.2);
+    }
+
+    .month-checkbox.selected {
+      background: var(--stage-purple);
+      color: white;
+    }
+
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.2);
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--acoustic-orange);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .add-slot-btn {
+      background: var(--stage-purple);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .delete-slot-btn {
+      background: #dc3545;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .musician-media {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .musician-media img {
+      max-width: 80px;
+      max-height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .musician-media audio {
+      max-width: 250px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // API Base URL - change this to your server URL
+    const API_URL = 'http://farmersmarketboards.xyz/api';
+
+    // API Helper Functions
+    const api = {
+      async get(endpoint) {
+        const response = await fetch(`${API_URL}${endpoint}`);
+        return response.json();
+      },
+      async post(endpoint, data) {
+        const response = await fetch(`${API_URL}${endpoint}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        return response.json();
+      },
+      async put(endpoint, data) {
+        const response = await fetch(`${API_URL}${endpoint}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        return response.json();
+      },
+      async delete(endpoint) {
+        const response = await fetch(`${API_URL}${endpoint}`, {
+          method: 'DELETE'
+        });
+        return response.json();
+      }
+    };
+
+    function App() {
+      const [activeTab, setActiveTab] = useState('musician');
+      const [markets, setMarkets] = useState([]);
+      const [selectedMarket, setSelectedMarket] = useState(null);
+      const [isAdmin, setIsAdmin] = useState(false);
+      const [showModal, setShowModal] = useState(false);
+      const [modalContent, setModalContent] = useState('');
+      const [loading, setLoading] = useState(true);
+
+      useEffect(() => {
+        loadMarkets();
+      }, []);
+
+      const loadMarkets = async () => {
+        try {
+          const result = await api.get('/markets');
+          if (result.success) {
+            setMarkets(result.markets);
+            if (result.markets.length > 0) {
+              setSelectedMarket(result.markets[0]);
+            }
+          }
+        } catch (error) {
+          console.error('Failed to load markets:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      if (loading) {
+        return (
+          <div className="app-container">
+            <div className="loading">🎵 Loading markets...</div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="app-container">
+          <header>
+            <h1><span>♪</span> LIVE AT THE MARKET <span>♫</span></h1>
+            <p className="subtitle">Summer Musicians Performance Signup</p>
+            <div className="info-banner">
+              🎵 Performance Slots Available | Upload Your Music | Flexible Scheduling | Stipend Provided
+            </div>
+          </header>
+
+          {markets.length > 1 && (
+            <div className="market-selector">
+              <div className="card">
+                <label>Select Market Location</label>
+                <select 
+                  value={selectedMarket?.id || ''}
+                  onChange={(e) => {
+                    const market = markets.find(m => m.id === parseInt(e.target.value));
+                    setSelectedMarket(market);
+                  }}
+                >
+                  {markets.map(market => (
+                    <option key={market.id} value={market.id}>
+                      {market.name} - {market.location}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          )}
+
+          <div className="nav-tabs">
+            <button 
+              className={`tab-button ${activeTab === 'musician' ? 'active' : ''}`}
+              onClick={() => setActiveTab('musician')}
+            >
+              Musician Signup
+            </button>
+            <button 
+              className={`tab-button ${activeTab === 'admin' ? 'active' : ''}`}
+              onClick={() => setActiveTab('admin')}
+            >
+              Admin Dashboard
+            </button>
+            {isAdmin && (
+              <button 
+                className={`tab-button ${activeTab === 'schedule' ? 'active' : ''}`}
+                onClick={() => setActiveTab('schedule')}
+              >
+                Schedule Manager
+              </button>
+            )}
+          </div>
+
+          {activeTab === 'musician' && selectedMarket && (
+            <MusicianView 
+              market={selectedMarket}
+              setShowModal={setShowModal}
+              setModalContent={setModalContent}
+            />
+          )}
+
+          {activeTab === 'admin' && !isAdmin && (
+            <AdminLogin setIsAdmin={setIsAdmin} />
+          )}
+
+          {activeTab === 'admin' && isAdmin && selectedMarket && (
+            <AdminView market={selectedMarket} />
+          )}
+
+          {activeTab === 'schedule' && isAdmin && selectedMarket && (
+            <>
+              <ScheduleManager market={selectedMarket} />
+              <InitializeSeason market={selectedMarket} />
+            </>
+          )}
+
+          {showModal && (
+            <div className="modal-overlay" onClick={() => setShowModal(false)}>
+              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                {modalContent}
+                <button className="btn btn-primary" style={{marginTop: '20px', width: '100%'}} onClick={() => setShowModal(false)}>
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // File Upload Component
+    function MusicianFileUpload({ musicianId, onUploadComplete }) {
+      const [files, setFiles] = useState({
+        music_sample: null,
+        logo: null,
+        headshot: null
+      });
+      
+      const [previews, setPreviews] = useState({
+        music_sample: null,
+        logo: null,
+        headshot: null
+      });
+      
+      const [uploading, setUploading] = useState(false);
+      const [uploadProgress, setUploadProgress] = useState('');
+
+      const fileInputRefs = {
+        music_sample: useRef(null),
+        logo: useRef(null),
+        headshot: useRef(null)
+      };
+
+      const handleFileSelect = (fileType, event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        if (file.size > 10 * 1024 * 1024) {
+          alert('File size must be less than 10MB');
+          return;
+        }
+
+        if (fileType === 'music_sample' && !file.type.startsWith('audio/')) {
+          alert('Please select an audio file for music sample');
+          return;
+        }
+
+        if ((fileType === 'logo' || fileType === 'headshot') && !file.type.startsWith('image/')) {
+          alert('Please select an image file');
+          return;
+        }
+
+        setFiles(prev => ({ ...prev, [fileType]: file }));
+
+        if (fileType === 'music_sample') {
+          const audioUrl = URL.createObjectURL(file);
+          setPreviews(prev => ({ ...prev, [fileType]: audioUrl }));
+        } else {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setPreviews(prev => ({ ...prev, [fileType]: reader.result }));
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+
+      const removeFile = (fileType) => {
+        setFiles(prev => ({ ...prev, [fileType]: null }));
+        setPreviews(prev => ({ ...prev, [fileType]: null }));
+        if (fileInputRefs[fileType].current) {
+          fileInputRefs[fileType].current.value = '';
+        }
+      };
+
+      const uploadFiles = async () => {
+        if (!musicianId) {
+          alert('Please register first before uploading files');
+          return;
+        }
+
+        const hasFiles = Object.values(files).some(f => f !== null);
+        if (!hasFiles) {
+          alert('Please select at least one file to upload');
+          return;
+        }
+
+        try {
+          setUploading(true);
+          setUploadProgress('Uploading files...');
+
+          const formData = new FormData();
+          
+          if (files.music_sample) formData.append('music_sample', files.music_sample);
+          if (files.logo) formData.append('logo', files.logo);
+          if (files.headshot) formData.append('headshot', files.headshot);
+
+          const response = await fetch(`${API_URL}/musicians/${musicianId}/upload`, {
+            method: 'POST',
+            body: formData
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            setUploadProgress(`✅ Successfully uploaded ${result.files.length} file(s)!`);
+            
+            setTimeout(() => {
+              setFiles({ music_sample: null, logo: null, headshot: null });
+              setPreviews({ music_sample: null, logo: null, headshot: null });
+              setUploadProgress('');
+              if (onUploadComplete) onUploadComplete(result.files);
+            }, 2000);
+          } else {
+            throw new Error(result.error);
+          }
+        } catch (error) {
+          alert('Upload failed: ' + error.message);
+          setUploadProgress('');
+        } finally {
+          setUploading(false);
+        }
+      };
+
+      const formatFileSize = (bytes) => {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+      };
+
+      return (
+        <div className="file-upload-section">
+          <h3 style={{
+            fontFamily: "'Space Mono', monospace",
+            fontSize: '1.5rem',
+            color: 'var(--melody-yellow)',
+            marginBottom: '10px'
+          }}>
+            📁 Upload Your Media
+          </h3>
+          <p style={{ color: 'var(--amp-silver)', marginBottom: '20px' }}>
+            Showcase your talent! Upload a music sample, your logo, and a professional headshot.
+          </p>
+
+          <div className="file-upload-grid">
+            {/* Music Sample */}
+            <div 
+              className={`file-upload-box ${files.music_sample ? 'has-file' : ''}`}
+              onClick={() => fileInputRefs.music_sample.current?.click()}
+            >
+              {files.music_sample && (
+                <button
+                  className="remove-file-btn"
+                  onClick={(e) => { e.stopPropagation(); removeFile('music_sample'); }}
+                >
+                  ×
+                </button>
+              )}
+              
+              <div className="file-upload-icon">🎵</div>
+              <div className="file-upload-label">Music Sample</div>
+              <div className="file-upload-hint">MP3, WAV, etc. (Max 10MB)</div>
+              
+              <input
+                ref={fileInputRefs.music_sample}
+                type="file"
+                accept="audio/*"
+                style={{ display: 'none' }}
+                onChange={(e) => handleFileSelect('music_sample', e)}
+              />
+              
+              {files.music_sample && (
+                <div className="file-preview">
+                  <div className="file-info">
+                    <strong>{files.music_sample.name}</strong><br/>
+                    {formatFileSize(files.music_sample.size)}
+                  </div>
+                  {previews.music_sample && (
+                    <div className="audio-preview">
+                      <audio controls src={previews.music_sample}>
+                        Your browser does not support audio playback.
+                      </audio>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Logo */}
+            <div 
+              className={`file-upload-box ${files.logo ? 'has-file' : ''}`}
+              onClick={() => fileInputRefs.logo.current?.click()}
+            >
+              {files.logo && (
+                <button
+                  className="remove-file-btn"
+                  onClick={(e) => { e.stopPropagation(); removeFile('logo'); }}
+                >
+                  ×
+                </button>
+              )}
+              
+              <div className="file-upload-icon">🎨</div>
+              <div className="file-upload-label">Band Logo</div>
+              <div className="file-upload-hint">JPG, PNG (Max 10MB)</div>
+              
+              <input
+                ref={fileInputRefs.logo}
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={(e) => handleFileSelect('logo', e)}
+              />
+              
+              {files.logo && (
+                <div className="file-preview">
+                  {previews.logo && (
+                    <img src={previews.logo} alt="Logo preview" />
+                  )}
+                  <div className="file-info">
+                    <strong>{files.logo.name}</strong><br/>
+                    {formatFileSize(files.logo.size)}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Headshot */}
+            <div 
+              className={`file-upload-box ${files.headshot ? 'has-file' : ''}`}
+              onClick={() => fileInputRefs.headshot.current?.click()}
+            >
+              {files.headshot && (
+                <button
+                  className="remove-file-btn"
+                  onClick={(e) => { e.stopPropagation(); removeFile('headshot'); }}
+                >
+                  ×
+                </button>
+              )}
+              
+              <div className="file-upload-icon">📸</div>
+              <div className="file-upload-label">Headshot</div>
+              <div className="file-upload-hint">JPG, PNG (Max 10MB)</div>
+              
+              <input
+                ref={fileInputRefs.headshot}
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={(e) => handleFileSelect('headshot', e)}
+              />
+              
+              {files.headshot && (
+                <div className="file-preview">
+                  {previews.headshot && (
+                    <img src={previews.headshot} alt="Headshot preview" />
+                  )}
+                  <div className="file-info">
+                    <strong>{files.headshot.name}</strong><br/>
+                    {formatFileSize(files.headshot.size)}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {uploadProgress && (
+            <div className="upload-progress">
+              {uploadProgress}
+            </div>
+          )}
+
+          <button
+            className="btn btn-primary"
+            style={{ marginTop: '30px', width: '100%', padding: '18px' }}
+            onClick={uploadFiles}
+            disabled={uploading || !Object.values(files).some(f => f !== null)}
+          >
+            {uploading ? 'Uploading...' : 'Upload Media Files'}
+          </button>
+        </div>
+      );
+    }
+
+    function MusicianView({ market, setShowModal, setModalContent }) {
+      const [schedule, setSchedule] = useState([]);
+      const [loading, setLoading] = useState(true);
+      const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        music_genre: '',
+        description: '',
+        selected_slots: [],
+        join_waitlist: false
+      });
+      const [submitting, setSubmitting] = useState(false);
+      const [showFileUpload, setShowFileUpload] = useState(false);
+      const [musicianId, setMusicianId] = useState(null);
+
+      useEffect(() => {
+        loadSchedule();
+      }, [market]);
+
+      const loadSchedule = async () => {
+        try {
+          setLoading(true);
+          const result = await api.get(`/markets/${market.id}/schedule`);
+          if (result.success) {
+            setSchedule(result.schedule);
+          }
+        } catch (error) {
+          console.error('Failed to load schedule:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData(prev => ({
+          ...prev,
+          [name]: type === 'checkbox' ? checked : value
+        }));
+      };
+
+      const handleSlotSelection = (slotId) => {
+        setFormData(prev => ({
+          ...prev,
+          selected_slots: prev.selected_slots.includes(slotId)
+            ? prev.selected_slots.filter(id => id !== slotId)
+            : [...prev.selected_slots, slotId]
+        }));
+      };
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (formData.selected_slots.length === 0) {
+          alert('Please select at least one performance slot');
+          return;
+        }
+
+        try {
+          setSubmitting(true);
+          const result = await api.post('/musicians/register', formData);
+          
+          if (result.success) {
+            setMusicianId(result.musician_id);
+            setShowFileUpload(true);
+            
+            setModalContent(
+              <div>
+                <div className="success-message">
+                  <h2 style={{marginBottom: '10px'}}>🎸 Registration Successful!</h2>
+                  <p>Thanks for signing up, {formData.name}!</p>
+                </div>
+                <p><strong>Confirmed Performances:</strong> {result.booked_count}</p>
+                <p><strong>Waitlist Positions:</strong> {result.waitlist_count}</p>
+                <div style={{marginTop: '20px', fontSize: '0.9rem'}}>
+                  {result.booking_details.map((booking, i) => (
+                    <div key={i} style={{marginBottom: '10px', padding: '10px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px'}}>
+                      📅 {new Date(booking.date).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}<br/>
+                      🕐 {booking.time}<br/>
+                      {booking.status === 'waitlist' && '⏳ Waitlist'}
+                      {booking.status === 'confirmed' && '✅ Confirmed'}
+                    </div>
+                  ))}
+                </div>
+                <p style={{marginTop: '15px', fontSize: '0.9rem', color: 'var(--amp-silver)'}}>
+                  We'll send a confirmation email to {formData.email}
+                </p>
+                <p style={{marginTop: '15px', fontSize: '1rem', color: 'var(--melody-yellow)', fontWeight: 'bold'}}>
+                  📁 Don't forget to upload your music sample, logo, and headshot below!
+                </p>
+              </div>
+            );
+            setShowModal(true);
+
+            setFormData({
+              name: '',
+              email: '',
+              phone: '',
+              music_genre: '',
+              description: '',
+              selected_slots: [],
+              join_waitlist: false
+            });
+            loadSchedule();
+          } else {
+            alert('Registration failed: ' + result.error);
+          }
+        } catch (error) {
+          alert('Registration failed: ' + error.message);
+        } finally {
+          setSubmitting(false);
+        }
+      };
+
+      if (loading) {
+        return <div className="loading">Loading schedule...</div>;
+      }
+
+      return (
+        <div>
+          <div className="card">
+            <h2 className="card-header">Musician Registration</h2>
+            
+            <div className="stipend-info">
+              <div className="stipend-amount">${market.stipend_amount} Stipend</div>
+              <p style={{marginTop: '10px', fontSize: '0.9rem'}}>Per 2-hour performance</p>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Performer/Band Name *</label>
+                <input 
+                  type="text" 
+                  name="name" 
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required 
+                  placeholder="Your name or band name"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Email Address *</label>
+                <input 
+                  type="email" 
+                  name="email" 
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required 
+                  placeholder="your.email@example.com"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Phone Number *</label>
+                <input 
+                  type="tel" 
+                  name="phone" 
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required 
+                  placeholder="(555) 555-5555"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Music Genre/Style *</label>
+                <select 
+                  name="music_genre" 
+                  value={formData.music_genre}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select genre...</option>
+                  <option value="acoustic">Acoustic</option>
+                  <option value="folk">Folk</option>
+                  <option value="bluegrass">Bluegrass</option>
+                  <option value="jazz">Jazz</option>
+                  <option value="blues">Blues</option>
+                  <option value="country">Country</option>
+                  <option value="rock">Rock</option>
+                  <option value="classical">Classical</option>
+                  <option value="world">World Music</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Brief Description of Your Music</label>
+                <textarea 
+                  name="description" 
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  rows="3"
+                  placeholder="Tell us about your sound, instruments, and performance style..."
+                ></textarea>
+              </div>
+
+              <div className="checkbox-group">
+                <input 
+                  type="checkbox" 
+                  name="join_waitlist" 
+                  id="waitlist"
+                  checked={formData.join_waitlist}
+                  onChange={handleInputChange}
+                />
+                <label htmlFor="waitlist" style={{marginBottom: 0, textTransform: 'none'}}>
+                  Add me to waitlist for booked slots (we'll email if someone cancels)
+                </label>
+              </div>
+
+              <h3 style={{
+                fontFamily: "'Space Mono', monospace",
+                fontSize: '1.5rem',
+                color: 'var(--melody-yellow)',
+                marginTop: '30px',
+                marginBottom: '20px'
+              }}>
+                Select Your Performance Dates
+              </h3>
+
+              <div className="calendar-grid">
+                {schedule.map(dateSchedule => {
+                  const date = new Date(dateSchedule.date + 'T12:00:00');
+                  
+                  return (
+                    <div key={dateSchedule.date} className="date-card">
+                      <div className="date-header">
+                        {date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      </div>
+                      <div className="date-subheader">
+                        {date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric' })}
+                      </div>
+                      
+                      {dateSchedule.slots.map(slot => {
+                        const isSelected = formData.selected_slots.includes(slot.slot_id);
+                        
+                        return (
+                          <div 
+                            key={slot.slot_id} 
+                            className={`time-slot ${slot.is_available ? 'available' : 'booked'}`}
+                            style={isSelected ? {borderColor: 'var(--melody-yellow)', borderWidth: '2px'} : {}}
+                          >
+                            <div>
+                              <div className="time-info">
+                                {slot.start_time.substring(0,5)} - {slot.end_time.substring(0,5)}
+                              </div>
+                              {!slot.is_available && (
+                                <div className="performer-name">🎵 {slot.booking.musician_name}</div>
+                              )}
+                              {slot.waitlist_count > 0 && (
+                                <div style={{fontSize: '0.75rem', color: 'var(--stage-purple)', marginTop: '3px'}}>
+                                  {slot.waitlist_count} on waitlist
+                                </div>
+                              )}
+                            </div>
+                            <div>
+                              {slot.is_available ? (
+                                <button 
+                                  type="button"
+                                  className="btn btn-small btn-primary"
+                                  onClick={() => handleSlotSelection(slot.slot_id)}
+                                >
+                                  {isSelected ? '✓ Selected' : 'Select'}
+                                </button>
+                              ) : (
+                                <span className="status-badge status-booked">Booked</span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <button 
+                type="submit" 
+                className="btn btn-primary" 
+                style={{marginTop: '30px', width: '100%', padding: '18px'}}
+                disabled={submitting}
+              >
+                {submitting ? 'Submitting...' : 'Submit Registration'}
+              </button>
+            </form>
+          </div>
+
+          {showFileUpload && musicianId && (
+            <MusicianFileUpload 
+              musicianId={musicianId}
+              onUploadComplete={(files) => {
+                console.log('Files uploaded:', files);
+                alert('Media files uploaded successfully! ✅');
+                setShowFileUpload(false);
+              }}
+            />
+          )}
+        </div>
+      );
+    }
+
+    function AdminLogin({ setIsAdmin }) {
+      const [username, setUsername] = useState('');
+      const [password, setPassword] = useState('');
+      const [error, setError] = useState('');
+
+      const handleLogin = async () => {
+        try {
+          const result = await api.post('/admin/login', { username, password });
+          if (result.success) {
+            setIsAdmin(true);
+          } else {
+            setError(result.error);
+          }
+        } catch (error) {
+          setError('Login failed: ' + error.message);
+        }
+      };
+
+      return (
+        <div className="admin-login">
+          <div className="card">
+            <h2 className="card-header">Admin Access</h2>
+            {error && <div className="error-message">{error}</div>}
+            <div className="form-group">
+              <label>Username</label>
+              <input 
+                type="text" 
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter username"
+              />
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
+                placeholder="Enter password"
+              />
+            </div>
+            <button className="btn btn-primary" style={{width: '100%'}} onClick={handleLogin}>
+              Login
+            </button>
+            <p style={{marginTop: '15px', fontSize: '0.85rem', color: 'var(--amp-silver)', textAlign: 'center'}}>
+              Default: username: admin, password: admin123
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    function AdminView({ market }) {
+      const [stats, setStats] = useState(null);
+      const [bookings, setBookings] = useState([]);
+      const [musicians, setMusicians] = useState([]);
+      const [filterMonth, setFilterMonth] = useState('all');
+      const [filterStatus, setFilterStatus] = useState('all');
+      const [loading, setLoading] = useState(true);
+
+      useEffect(() => {
+        loadData();
+      }, [market, filterMonth, filterStatus]);
+
+      const loadData = async () => {
+        try {
+          setLoading(true);
+          
+          const statsResult = await api.get(`/admin/stats?market_id=${market.id}`);
+          if (statsResult.success) {
+            setStats(statsResult.stats);
+          }
+
+          let bookingsQuery = `/admin/bookings?market_id=${market.id}`;
+          if (filterMonth !== 'all') bookingsQuery += `&month=${filterMonth}`;
+          if (filterStatus !== 'all') bookingsQuery += `&status=${filterStatus}`;
+          
+          const bookingsResult = await api.get(bookingsQuery);
+          if (bookingsResult.success) {
+            setBookings(bookingsResult.bookings);
+          }
+
+          const musiciansResult = await api.get('/musicians');
+          if (musiciansResult.success) {
+            setMusicians(musiciansResult.musicians);
+          }
+        } catch (error) {
+          console.error('Failed to load admin data:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      const handleCancelBooking = async (bookingId) => {
+        if (!confirm('Are you sure you want to cancel this booking?')) return;
+
+        try {
+          const result = await api.post(`/bookings/${bookingId}/cancel`, {
+            reason: 'Cancelled by admin'
+          });
+          
+          if (result.success) {
+            if (result.promoted_musician) {
+              alert(`Booking cancelled. ${result.promoted_musician} has been promoted from waitlist.`);
+            } else {
+              alert('Booking cancelled successfully.');
+            }
+            loadData();
+          }
+        } catch (error) {
+          alert('Failed to cancel booking: ' + error.message);
+        }
+      };
+
+      const handleMarkPaid = async (bookingId) => {
+        try {
+          const result = await api.post(`/bookings/${bookingId}/mark-paid`, {});
+          if (result.success) {
+            alert('Stipend marked as paid');
+            loadData();
+          }
+        } catch (error) {
+          alert('Failed to mark as paid: ' + error.message);
+        }
+      };
+
+      if (loading) {
+        return <div className="loading">Loading admin data...</div>;
+      }
+
+      return (
+        <div>
+          {stats && (
+            <div className="stats-grid">
+              <div className="stat-card">
+                <div className="stat-number">{stats.booked_slots}</div>
+                <div className="stat-label">Booked Slots</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">{stats.available_slots}</div>
+                <div className="stat-label">Available Slots</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">{stats.total_musicians}</div>
+                <div className="stat-label">Total Musicians</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">{stats.total_waitlist}</div>
+                <div className="stat-label">Waitlist Total</div>
+              </div>
+            </div>
+          )}
+
+          <div className="card">
+            <h2 className="card-header">Performance Schedule</h2>
+
+            <div className="filter-bar">
+              <select value={filterMonth} onChange={(e) => setFilterMonth(e.target.value)}>
+                <option value="all">All Months</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+              <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+                <option value="all">All Status</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Performer</th>
+                  <th>Genre</th>
+                  <th>Contact</th>
+                  <th>Media</th>
+                  <th>Stipend</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bookings.map(booking => (
+                  <tr key={booking.booking_id}>
+                    <td>{new Date(booking.performance_date).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}</td>
+                    <td>{booking.start_time.substring(0,5)} - {booking.end_time.substring(0,5)}</td>
+                    <td><strong>{booking.musician_name}</strong></td>
+                    <td><span className="genre-tag">{booking.music_genre}</span></td>
+                    <td>
+                      <a href={`mailto:${booking.email}`} style={{color: 'var(--acoustic-orange)'}}>
+                        {booking.email}
+                      </a>
+                      <div style={{fontSize: '0.8rem', marginTop: '3px'}}>{booking.phone}</div>
+                    </td>
+                    <td>
+                      <div className="musician-media">
+                        {booking.logo_url && (
+                          <img src={`${API_URL.replace('/api', '')}${booking.logo_url}`} alt="Logo" title="Band Logo" />
+                        )}
+                        {booking.headshot_url && (
+                          <img src={`${API_URL.replace('/api', '')}${booking.headshot_url}`} alt="Headshot" title="Headshot" />
+                        )}
+                        {booking.music_sample_url && (
+                          <audio controls src={`${API_URL.replace('/api', '')}${booking.music_sample_url}`} title="Music Sample"></audio>
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                      {booking.stipend_paid ? (
+                        <span className="status-badge" style={{background: 'green'}}>Paid</span>
+                      ) : (
+                        <button 
+                          className="btn btn-small"
+                          onClick={() => handleMarkPaid(booking.booking_id)}
+                        >
+                          Mark Paid
+                        </button>
+                      )}
+                    </td>
+                    <td>
+                      <div className="admin-actions">
+                        {booking.status === 'confirmed' && (
+                          <button 
+                            className="btn btn-small"
+                            style={{background: '#dc3545', color: 'white'}}
+                            onClick={() => handleCancelBooking(booking.booking_id)}
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="card">
+            <h2 className="card-header">All Registered Musicians</h2>
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Genre</th>
+                  <th>Media</th>
+                  <th>Registered</th>
+                </tr>
+              </thead>
+              <tbody>
+                {musicians.map(musician => (
+                  <tr key={musician.id}>
+                    <td><strong>{musician.name}</strong></td>
+                    <td>{musician.email}</td>
+                    <td>{musician.phone}</td>
+                    <td><span className="genre-tag">{musician.music_genre}</span></td>
+                    <td>
+                      <div className="musician-media">
+                        {musician.logo_url && (
+                          <img src={`${API_URL.replace('/api', '')}${musician.logo_url}`} alt="Logo" />
+                        )}
+                        {musician.headshot_url && (
+                          <img src={`${API_URL.replace('/api', '')}${musician.headshot_url}`} alt="Headshot" />
+                        )}
+                        {musician.music_sample_url && (
+                          <audio controls src={`${API_URL.replace('/api', '')}${musician.music_sample_url}`}></audio>
+                        )}
+                      </div>
+                    </td>
+                    <td>{new Date(musician.created_at).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      );
+    }
+
+    // Schedule Manager Component
+    function ScheduleManager({ market }) {
+      const [schedule, setSchedule] = useState({
+        days: JSON.parse(market.custom_days || '[6]'),
+        months: JSON.parse(market.custom_months || '[5,6,7,8,9,10]'),
+        yearRound: market.year_round || false,
+        timeSlots: []
+      });
+      const [loading, setLoading] = useState(true);
+
+      const daysOfWeek = [
+        { value: 0, label: 'Sun' },
+        { value: 1, label: 'Mon' },
+        { value: 2, label: 'Tue' },
+        { value: 3, label: 'Wed' },
+        { value: 4, label: 'Thu' },
+        { value: 5, label: 'Fri' },
+        { value: 6, label: 'Sat' }
+      ];
+
+      const months = [
+        { value: 1, label: 'Jan' },
+        { value: 2, label: 'Feb' },
+        { value: 3, label: 'Mar' },
+        { value: 4, label: 'Apr' },
+        { value: 5, label: 'May' },
+        { value: 6, label: 'Jun' },
+        { value: 7, label: 'Jul' },
+        { value: 8, label: 'Aug' },
+        { value: 9, label: 'Sep' },
+        { value: 10, label: 'Oct' },
+        { value: 11, label: 'Nov' },
+        { value: 12, label: 'Dec' }
+      ];
+
+      useEffect(() => {
+        loadTimeSlots();
+      }, [market.id]);
+
+      const loadTimeSlots = async () => {
+        try {
+          const result = await api.get(`/markets/${market.id}/time-slots`);
+          if (result.success) {
+            setSchedule(prev => ({ ...prev, timeSlots: result.slots }));
+          }
+        } catch (error) {
+          console.error('Failed to load time slots:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      const toggleDay = (day) => {
+        setSchedule(prev => ({
+          ...prev,
+          days: prev.days.includes(day)
+            ? prev.days.filter(d => d !== day)
+            : [...prev.days, day].sort()
+        }));
+      };
+
+      const toggleMonth = (month) => {
+        setSchedule(prev => ({
+          ...prev,
+          months: prev.months.includes(month)
+            ? prev.months.filter(m => m !== month)
+            : [...prev.months, month].sort()
+        }));
+      };
+
+      const addTimeSlot = () => {
+        const newSlot = {
+          id: null,
+          start_time: '10:00',
+          end_time: '12:00',
+          slot_name: `Slot ${schedule.timeSlots.length + 1}`,
+          slot_order: schedule.timeSlots.length + 1,
+          is_active: true,
+          isNew: true
+        };
+        setSchedule(prev => ({
+          ...prev,
+          timeSlots: [...prev.timeSlots, newSlot]
+        }));
+      };
+
+      const updateTimeSlot = (index, field, value) => {
+        setSchedule(prev => {
+          const newSlots = [...prev.timeSlots];
+          newSlots[index] = { ...newSlots[index], [field]: value };
+          return { ...prev, timeSlots: newSlots };
+        });
+      };
+
+      const deleteTimeSlot = async (index) => {
+        const slot = schedule.timeSlots[index];
+        if (!slot.isNew && !confirm('Delete this time slot? This will remove it from all future dates.')) {
+          return;
+        }
+
+        try {
+          if (!slot.isNew) {
+            await api.delete(`/markets/${market.id}/time-slots/${slot.id}`);
+          }
+          setSchedule(prev => ({
+            ...prev,
+            timeSlots: prev.timeSlots.filter((_, i) => i !== index)
+          }));
+          alert('Time slot deleted successfully');
+        } catch (error) {
+          alert('Failed to delete time slot: ' + error.message);
+        }
+      };
+
+      const saveSchedule = async () => {
+        if (schedule.days.length === 0) {
+          alert('Please select at least one day of the week');
+          return;
+        }
+
+        if (!schedule.yearRound && schedule.months.length === 0) {
+          alert('Please select at least one month or enable year-round operation');
+          return;
+        }
+
+        if (schedule.timeSlots.length === 0) {
+          alert('Please add at least one time slot');
+          return;
+        }
+
+        try {
+          setLoading(true);
+
+          for (const slot of schedule.timeSlots) {
+            if (slot.isNew) {
+              await api.post(`/markets/${market.id}/time-slots`, {
+                start_time: slot.start_time + ':00',
+                end_time: slot.end_time + ':00',
+                slot_name: slot.slot_name,
+                slot_order: slot.slot_order
+              });
+            } else {
+              await api.put(`/markets/${market.id}/time-slots/${slot.id}`, {
+                start_time: slot.start_time + ':00',
+                end_time: slot.end_time + ':00',
+                slot_name: slot.slot_name,
+                slot_order: slot.slot_order,
+                is_active: slot.is_active
+              });
+            }
+          }
+
+          await api.put(`/markets/${market.id}/schedule`, {
+            custom_days: schedule.days,
+            custom_months: schedule.yearRound ? null : schedule.months,
+            year_round: schedule.yearRound,
+            season_start_month: schedule.yearRound ? 1 : Math.min(...schedule.months),
+            season_end_month: schedule.yearRound ? 12 : Math.max(...schedule.months)
+          });
+
+          alert('Schedule saved successfully! Now initialize the season to create dates.');
+          await loadTimeSlots();
+        } catch (error) {
+          alert('Failed to save schedule: ' + error.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      if (loading && schedule.timeSlots.length === 0) {
+        return <div className="loading">Loading schedule...</div>;
+      }
+
+      return (
+        <div className="schedule-manager card">
+          <h2 style={{ fontFamily: "'Space Mono', monospace", color: 'var(--melody-yellow)', marginBottom: '30px' }}>
+            📅 Schedule Configuration
+          </h2>
+
+          <div className="schedule-section">
+            <h3>Operating Days</h3>
+            <div className="day-selector">
+              {daysOfWeek.map(day => (
+                <div
+                  key={day.value}
+                  className={`day-checkbox ${schedule.days.includes(day.value) ? 'selected' : ''}`}
+                  onClick={() => toggleDay(day.value)}
+                >
+                  <input
+                    type="checkbox"
+                    checked={schedule.days.includes(day.value)}
+                    onChange={() => {}}
+                    style={{ marginRight: '8px' }}
+                  />
+                  {day.label}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="schedule-section">
+            <h3>Operating Period</h3>
+            <div className="toggle-switch">
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={schedule.yearRound}
+                  onChange={(e) => setSchedule(prev => ({ ...prev, yearRound: e.target.checked }))}
+                />
+                <span className="slider"></span>
+              </label>
+              <span>Year-Round Operation</span>
+            </div>
+
+            {!schedule.yearRound && (
+              <>
+                <p style={{ marginBottom: '15px', color: 'var(--amp-silver)' }}>
+                  Select the months your market operates:
+                </p>
+                <div className="month-selector">
+                  {months.map(month => (
+                    <div
+                      key={month.value}
+                      className={`month-checkbox ${schedule.months.includes(month.value) ? 'selected' : ''}`}
+                      onClick={() => toggleMonth(month.value)}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={schedule.months.includes(month.value)}
+                        onChange={() => {}}
+                        style={{ marginRight: '5px' }}
+                      />
+                      {month.label}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="schedule-section">
+            <h3>Time Slots</h3>
+            <p style={{ marginBottom: '15px', color: 'var(--amp-silver)' }}>
+              Define the performance time slots for this market:
+            </p>
+            
+            <div className="time-slot-list">
+              {schedule.timeSlots.map((slot, index) => (
+                <div key={index} className="time-slot-item">
+                  <div>
+                    <label style={{ fontSize: '0.8rem', marginBottom: '5px' }}>Start Time</label>
+                    <input
+                      type="time"
+                      value={slot.start_time}
+                      onChange={(e) => updateTimeSlot(index, 'start_time', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '0.8rem', marginBottom: '5px' }}>End Time</label>
+                    <input
+                      type="time"
+                      value={slot.end_time}
+                      onChange={(e) => updateTimeSlot(index, 'end_time', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '0.8rem', marginBottom: '5px' }}>Slot Name</label>
+                    <input
+                      type="text"
+                      value={slot.slot_name}
+                      onChange={(e) => updateTimeSlot(index, 'slot_name', e.target.value)}
+                      placeholder="e.g., Morning Performance"
+                    />
+                  </div>
+                  <button
+                    className="delete-slot-btn"
+                    onClick={() => deleteTimeSlot(index)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <button className="add-slot-btn" onClick={addTimeSlot}>
+              + Add Time Slot
+            </button>
+          </div>
+
+          <div style={{ marginTop: '30px', textAlign: 'center' }}>
+            <button className="btn btn-primary" style={{padding: '18px 50px'}} onClick={saveSchedule} disabled={loading}>
+              {loading ? 'Saving...' : 'Save Schedule Configuration'}
+            </button>
+          </div>
+
+          <div style={{ 
+            marginTop: '20px', 
+            padding: '15px', 
+            background: 'rgba(255, 210, 63, 0.1)', 
+            border: '2px solid var(--melody-yellow)',
+            borderRadius: '10px',
+            fontSize: '0.9rem'
+          }}>
+            <strong>⚠️ Important:</strong> After saving the schedule, you must initialize the season to create performance dates below.
+          </div>
+        </div>
+      );
+    }
+
+    function InitializeSeason({ market }) {
+      const [year, setYear] = useState(new Date().getFullYear());
+      const [loading, setLoading] = useState(false);
+
+      const initializeSeason = async () => {
+        if (!confirm(`Initialize season for ${year}? This will create all performance dates and time slots.`)) {
+          return;
+        }
+
+        try {
+          setLoading(true);
+          const result = await api.post(`/markets/${market.id}/initialize-season`, { year });
+          
+          if (result.success) {
+            alert(`✅ Success! Created ${result.dates_created} dates with ${result.slots_per_date} time slots each.\n\nTotal: ${result.dates_created * result.slots_per_date} performance slots`);
+          }
+        } catch (error) {
+          alert('Failed to initialize season: ' + error.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      return (
+        <div className="card">
+          <h2 className="card-header">🗓️ Initialize Season</h2>
+          <p style={{ marginBottom: '20px', color: 'var(--amp-silver)' }}>
+            After configuring your schedule, initialize the season to create all performance dates.
+          </p>
+          
+          <div className="form-group">
+            <label>Year</label>
+            <input
+              type="number"
+              value={year}
+              onChange={(e) => setYear(parseInt(e.target.value))}
+              min="2024"
+              max="2030"
+            />
+          </div>
+
+          <button 
+            className="btn btn-primary" 
+            onClick={initializeSeason}
+            disabled={loading}
+            style={{ width: '100%' }}
+          >
+            {loading ? 'Initializing...' : `Initialize ${year} Season`}
+          </button>
+
+          <div style={{ 
+            marginTop: '20px', 
+            padding: '15px', 
+            background: 'rgba(255, 107, 53, 0.1)', 
+            border: '2px solid var(--acoustic-orange)',
+            borderRadius: '10px',
+            fontSize: '0.9rem'
+          }}>
+            <strong>Note:</strong> This will create dates based on your configured days, months, and time slots. 
+            If dates already exist for this year, they will be skipped.
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
